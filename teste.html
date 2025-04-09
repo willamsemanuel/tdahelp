@@ -1,0 +1,68 @@
+import React, { useState, useEffect } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Smile, Frown, Meh } from "lucide-react";
+
+const mascotes = [
+  {
+    nome: "Lumi",
+    humor: "feliz",
+    animacao: "🌟 Está radiante hoje!"
+  },
+  {
+    nome: "Lumi",
+    humor: "neutro",
+    animacao: "🌤️ Está de boas, seguindo o fluxo."
+  },
+  {
+    nome: "Lumi",
+    humor: "triste",
+    animacao: "🌧️ Está precisando de carinho hoje."
+  }
+];
+
+export default function TDAHelpApp() {
+  const [humor, setHumor] = useState("feliz");
+  const [frase, setFrase] = useState("");
+  const [mascote, setMascote] = useState(mascotes[0]);
+
+  useEffect(() => {
+    const frasesMotivacionais = {
+      feliz: ["Você está arrasando!", "Continue brilhando! 💫"],
+      neutro: ["Tudo bem ficar quietinho às vezes.", "Um passo de cada vez."],
+      triste: ["Você é forte, mesmo quando não parece.", "Vai passar, tô com você."],
+    };
+    const fraseAleatoria = frasesMotivacionais[humor][Math.floor(Math.random() * 2)];
+    setFrase(fraseAleatoria);
+    const novoMascote = mascotes.find((m) => m.humor === humor);
+    setMascote(novoMascote);
+  }, [humor]);
+
+  return (
+    <main className="p-6 max-w-xl mx-auto">
+      <h1 className="text-2xl font-bold text-center mb-4">TDAHelp 🌈</h1>
+
+      <section className="text-center mb-6">
+        <div className="text-4xl mb-2">
+          {humor === "feliz" && <Smile className="inline text-green-500" size={40} />}
+          {humor === "neutro" && <Meh className="inline text-yellow-500" size={40} />}
+          {humor === "triste" && <Frown className="inline text-blue-500" size={40} />}
+        </div>
+        <p className="text-lg font-semibold">Humor de hoje: {humor}</p>
+        <p className="italic mt-2">{frase}</p>
+        <p className="mt-1 text-sm text-gray-500">{mascote.animacao}</p>
+      </section>
+
+      <Card className="mb-4">
+        <CardContent className="p-4">
+          <h2 className="font-bold text-lg mb-2">Como você está se sentindo?</h2>
+          <div className="flex gap-4 justify-center">
+            <Button onClick={() => setHumor("feliz")} variant="outline">😀</Button>
+            <Button onClick={() => setHumor("neutro")} variant="outline">😐</Button>
+            <Button onClick={() => setHumor("triste")} variant="outline">😢</Button>
+          </div>
+        </CardContent>
+      </Card>
+    </main>
+  );
+}
